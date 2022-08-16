@@ -124,7 +124,7 @@ C               A PORTABLE PACKAGE FOR BESSEL FUNCTIONS OF A COMPLEX
 C                 ARGUMENT AND NONNEGATIVE ORDER BY D. E. AMOS, TRANS.
 C                 MATH. SOFTWARE, 1986
 C
-C***ROUTINES CALLED  ZACAI,ZBKNU,ZEXP,ZSQRT,I1MACH,D1MACH
+C***ROUTINES CALLED  ZACAI,ZBKNU,AZEXP,AZSQRT,I1MACH,D1MACH
 C***END PROLOGUE  ZAIRY
 C     COMPLEX AI,CONE,CSQ,CY,S1,S2,TRM1,TRM2,Z,ZTA,Z3
       DOUBLE PRECISION AA, AD, AII, AIR, AK, ALIM, ATRM, AZ, AZ3, BK,
@@ -201,10 +201,10 @@ C-----------------------------------------------------------------------
       AIR = S1R*C1 - C2*(ZR*S2R-ZI*S2I)
       AII = S1I*C1 - C2*(ZR*S2I+ZI*S2R)
       IF (KODE.EQ.1) RETURN
-      CALL ZSQRT(ZR, ZI, STR, STI)
+      CALL AZSQRT(ZR, ZI, STR, STI)
       ZTAR = TTH*(ZR*STR-ZI*STI)
       ZTAI = TTH*(ZR*STI+ZI*STR)
-      CALL ZEXP(ZTAR, ZTAI, STR, STI)
+      CALL AZEXP(ZTAR, ZTAI, STR, STI)
       PTR = AIR*STR - AII*STI
       AII = AIR*STI + AII*STR
       AIR = PTR
@@ -220,10 +220,10 @@ C-----------------------------------------------------------------------
       AII = AII + CC*(STR*ZI+STI*ZR)
    60 CONTINUE
       IF (KODE.EQ.1) RETURN
-      CALL ZSQRT(ZR, ZI, STR, STI)
+      CALL AZSQRT(ZR, ZI, STR, STI)
       ZTAR = TTH*(ZR*STR-ZI*STI)
       ZTAI = TTH*(ZR*STI+ZI*STR)
-      CALL ZEXP(ZTAR, ZTAI, STR, STI)
+      CALL AZEXP(ZTAR, ZTAI, STR, STI)
       PTR = STR*AIR - STI*AII
       AII = STR*AII + STI*AIR
       AIR = PTR
@@ -265,7 +265,7 @@ C-----------------------------------------------------------------------
       IF (AZ.GT.AA) GO TO 260
       AA=DSQRT(AA)
       IF (AZ.GT.AA) IERR=3
-      CALL ZSQRT(ZR, ZI, CSQR, CSQI)
+      CALL AZSQRT(ZR, ZI, CSQR, CSQI)
       ZTAR = TTH*(ZR*CSQR-ZI*CSQI)
       ZTAI = TTH*(ZR*CSQI+ZI*CSQR)
 C-----------------------------------------------------------------------

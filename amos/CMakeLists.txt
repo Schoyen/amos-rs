@@ -11,20 +11,8 @@ FortranCInterface_HEADER(${CMAKE_CURRENT_SOURCE_DIR}/amos-mangle.h
 
 
 set(SRC
-    d1mach.f
-    xerror.f
-    zacon.f
-    zbesh.f
-    zbesk.f
-    zbiry.f
-    zbunk.f
-    zkscl.f
-    zmlt.f
-    zseri.f
-    zuchk.f
-    zuni2.f
-    zunk2.f
-    dgamln.f
+    d1mach.f90
+    fdump.f
     zabs.f
     zairy.f
     zbesi.f
@@ -37,7 +25,8 @@ set(SRC
     zunhj.f
     zunik.f
     zuoik.f
-    i1mach.f
+    dgamln.f
+    i1mach.f90
     zacai.f
     zasyi.f
     zbesj.f
@@ -50,6 +39,19 @@ set(SRC
     zuni1.f
     zunk1.f
     zwrsk.f
+    dsclmr.f
+    r1mach.f90
+    zacon.f
+    zbesh.f
+    zbesk.f
+    zbiry.f
+    zbunk.f
+    zkscl.f
+    zmlt.f
+    zseri.f
+    zuchk.f
+    zuni2.f
+    zunk2.f
 )
 
 add_library(amos STATIC ${SRC} amos-int.c)

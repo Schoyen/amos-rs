@@ -118,7 +118,7 @@ C               A PORTABLE PACKAGE FOR BESSEL FUNCTIONS OF A COMPLEX
 C                 ARGUMENT AND NONNEGATIVE ORDER BY D. E. AMOS, TRANS.
 C                 MATH. SOFTWARE, 1986
 C
-C***ROUTINES CALLED  ZBINU,AZABS,ZDIV,ZSQRT,D1MACH,I1MACH
+C***ROUTINES CALLED  ZBINU,AZABS,ZDIV,AZSQRT,D1MACH,I1MACH
 C***END PROLOGUE  ZBIRY
 C     COMPLEX BI,CONE,CSQ,CY,S1,S2,TRM1,TRM2,Z,ZTA,Z3
       DOUBLE PRECISION AA, AD, AK, ALIM, ATRM, AZ, AZ3, BB, BII, BIR,
@@ -195,7 +195,7 @@ C-----------------------------------------------------------------------
       BIR = C1*S1R + C2*(ZR*S2R-ZI*S2I)
       BII = C1*S1I + C2*(ZR*S2I+ZI*S2R)
       IF (KODE.EQ.1) RETURN
-      CALL ZSQRT(ZR, ZI, STR, STI)
+      CALL AZSQRT(ZR, ZI, STR, STI)
       ZTAR = TTH*(ZR*STR-ZI*STI)
       ZTAI = TTH*(ZR*STI+ZI*STR)
       AA = ZTAR
@@ -215,7 +215,7 @@ C-----------------------------------------------------------------------
       BII = BII + CC*(STR*ZI+STI*ZR)
    60 CONTINUE
       IF (KODE.EQ.1) RETURN
-      CALL ZSQRT(ZR, ZI, STR, STI)
+      CALL AZSQRT(ZR, ZI, STR, STI)
       ZTAR = TTH*(ZR*STR-ZI*STI)
       ZTAI = TTH*(ZR*STI+ZI*STR)
       AA = ZTAR
@@ -262,7 +262,7 @@ C-----------------------------------------------------------------------
       IF (AZ.GT.AA) GO TO 260
       AA=DSQRT(AA)
       IF (AZ.GT.AA) IERR=3
-      CALL ZSQRT(ZR, ZI, CSQR, CSQI)
+      CALL AZSQRT(ZR, ZI, CSQR, CSQI)
       ZTAR = TTH*(ZR*CSQR-ZI*CSQI)
       ZTAI = TTH*(ZR*CSQI+ZI*CSQR)
 C-----------------------------------------------------------------------

@@ -6,7 +6,7 @@ C
 C     ZBKNU COMPUTES THE K BESSEL FUNCTION IN THE RIGHT HALF Z PLANE.
 C
 C***ROUTINES CALLED  DGAMLN,I1MACH,D1MACH,ZKSCL,ZSHCH,ZUCHK,AZABS,ZDIV,
-C                    ZEXP,ZLOG,ZMLT,ZSQRT
+C                    AZEXP,AZLOG,ZMLT,AZSQRT
 C***END PROLOGUE  ZBKNU
 C
       DOUBLE PRECISION AA, AK, ALIM, ASCLE, A1, A2, BB, BK, BRY, CAZ,
@@ -68,7 +68,7 @@ C-----------------------------------------------------------------------
 C     SERIES FOR CABS(Z).LE.R1
 C-----------------------------------------------------------------------
       FC = 1.0D0
-      CALL ZLOG(RZR, RZI, SMUR, SMUI, IDUM)
+      CALL AZLOG(RZR, RZI, SMUR, SMUI, IDUM)
       FMUR = SMUR*DNU
       FMUI = SMUI*DNU
       CALL ZSHCH(FMUR, FMUI, CSHR, CSHI, CCHR, CCHI)
@@ -104,7 +104,7 @@ C-----------------------------------------------------------------------
       G2 = (T1+T2)*0.5D0
       FR = FC*(CCHR*G1+SMUR*G2)
       FI = FC*(CCHI*G1+SMUI*G2)
-      CALL ZEXP(FMUR, FMUI, STR, STI)
+      CALL AZEXP(FMUR, FMUI, STR, STI)
       PR = 0.5D0*STR/T2
       PI = 0.5D0*STI/T2
       CALL ZDIV(0.5D0, 0.0D0, STR, STI, PTR, PTI)
@@ -151,7 +151,7 @@ C-----------------------------------------------------------------------
       YR(1) = S1R
       YI(1) = S1I
       IF (KODED.EQ.1) RETURN
-      CALL ZEXP(ZR, ZI, STR, STI)
+      CALL AZEXP(ZR, ZI, STR, STI)
       CALL ZMLT(S1R, S1I, STR, STI, YR(1), YI(1))
       RETURN
 C-----------------------------------------------------------------------
@@ -198,7 +198,7 @@ C-----------------------------------------------------------------------
       S1R = S1R*STR
       S1I = S1I*STR
       IF (KODED.EQ.1) GO TO 210
-      CALL ZEXP(ZR, ZI, FR, FI)
+      CALL AZEXP(ZR, ZI, FR, FI)
       CALL ZMLT(S1R, S1I, FR, FI, S1R, S1I)
       CALL ZMLT(S2R, S2I, FR, FI, S2R, S2I)
       GO TO 210
@@ -209,7 +209,7 @@ C     KODED=2 AND A TEST FOR ON SCALE VALUES IS MADE DURING FORWARD
 C     RECURSION
 C-----------------------------------------------------------------------
   110 CONTINUE
-      CALL ZSQRT(ZR, ZI, STR, STI)
+      CALL AZSQRT(ZR, ZI, STR, STI)
       CALL ZDIV(RTHPI, CZEROI, STR, STI, COEFR, COEFI)
       KFLAG = 2
       IF (KODED.EQ.2) GO TO 120
@@ -476,7 +476,7 @@ C-----------------------------------------------------------------------
         ALAS = DLOG(AS)
         P2R = -ZDR+ALAS
         IF(P2R.LT.(-ELIM)) GO TO 263
-        CALL ZLOG(S2R,S2I,STR,STI,IDUM)
+        CALL AZLOG(S2R,S2I,STR,STI,IDUM)
         P2R = -ZDR+STR
         P2I = -ZDI+STI
         P2M = DEXP(P2R)/TOL

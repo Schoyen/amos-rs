@@ -5,7 +5,7 @@ C
 C     ZMLRI COMPUTES THE I BESSEL FUNCTION FOR RE(Z).GE.0.0 BY THE
 C     MILLER ALGORITHM NORMALIZED BY A NEUMANN SERIES.
 C
-C***ROUTINES CALLED  DGAMLN,D1MACH,AZABS,ZEXP,ZLOG,ZMLT
+C***ROUTINES CALLED  DGAMLN,D1MACH,AZABS,AZEXP,AZLOG,ZMLT
 C***END PROLOGUE  ZMLRI
 C     COMPLEX CK,CNORM,CONE,CTWO,CZERO,PT,P1,P2,RZ,SUM,Y,Z
       DOUBLE PRECISION ACK, AK, AP, AT, AZ, BK, CKI, CKR, CNORMI,
@@ -172,7 +172,7 @@ C-----------------------------------------------------------------------
       PTR = ZR
       PTI = ZI
       IF (KODE.EQ.2) PTR = ZEROR
-      CALL ZLOG(RZR, RZI, STR, STI, IDUM)
+      CALL AZLOG(RZR, RZI, STR, STI, IDUM)
       P1R = -FNF*STR + PTR
       P1I = -FNF*STI + PTI
       AP = DGAMLN(1.0D0+FNF,IDUM)
@@ -186,7 +186,7 @@ C-----------------------------------------------------------------------
       P2I = P2I + SUMI
       AP = AZABS(P2R,P2I)
       P1R = 1.0D0/AP
-      CALL ZEXP(PTR, PTI, STR, STI)
+      CALL AZEXP(PTR, PTI, STR, STI)
       CKR = STR*P1R
       CKI = STI*P1R
       PTR = P2R*P1R
