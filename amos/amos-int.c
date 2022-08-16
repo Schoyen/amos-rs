@@ -3,6 +3,19 @@
 #include "amos-mangle.h"
 
 
+extern void F_GLOBAL(zbesh, ZBESH)(
+        const double *zr,
+        const double *zi,
+        const double *fnu,
+        const int *kode,
+        const int *m,
+        const int *n,
+        double *cyr,
+        double *cyi,
+        int *nz,
+        int *ierr
+);
+
 extern void F_GLOBAL(zbesi, ZBESI)(
         const double *zr,
         const double *zi,
@@ -15,19 +28,67 @@ extern void F_GLOBAL(zbesi, ZBESI)(
         int *ierr
 );
 
+extern void F_GLOBAL(zbesj, ZBESJ)(
+        const double *zr,
+        const double *zi,
+        const double *fnu,
+        const int *kode,
+        const int *n,
+        double *cyr,
+        double *cyi,
+        int *nz,
+        int *ierr
+);
 
-// void zbesi_w(
-//         const double *zr,
-//         const double *zi,
-//         const double *fnu,
-//         const int *kode,
-//         const int *n,
-//         double *cyr,
-//         double *cyi,
-//         int *nz,
-//         int *ierr
-// )
-// {
-//     printf("%f, %f, %f, %d, %d\n", *zr, *zi, *fnu, *kode, *n);
-//     F_GLOBAL(zbesi, ZBESI)(zr, zi, fnu, kode, n, cyr, cyi, nz, ierr);
-// }
+extern void F_GLOBAL(zbesk, ZBESK)(
+        const double *zr,
+        const double *zi,
+        const double *fnu,
+        const int *kode,
+        const int *n,
+        double *cyr,
+        double *cyi,
+        int *nz,
+        int *ierr
+);
+
+extern void F_GLOBAL(zbesy, ZBESY)(
+        const double *zr,
+        const double *zi,
+        const double *fnu,
+        const int *kode,
+        const int *n,
+        double *cyr,
+        double *cyi,
+        int *nz,
+        double *cwrkr,
+        double *cwrki,
+        int *ierr
+);
+
+extern void F_GLOBAL(zairy, ZAIRY)(
+        const double *zr,
+        const double *zi,
+        const int *id,
+        const int *kode,
+        double *air,
+        double *aii,
+        int *nz,
+        int *ierr
+);
+
+extern void F_GLOBAL(zbiry, ZBIRY)(
+        const double *zr,
+        const double *zi,
+        const int *id,
+        const int *kode,
+        double *bir,
+        double *bii,
+        int *ierr
+);
+
+
+extern double F_GLOBAL(dgamln, DGAMLN)(
+        const double *z,
+        int *ierr
+);
