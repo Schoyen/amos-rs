@@ -1,3 +1,15 @@
+cmake_minimum_required(VERSION 3.23.3)
+
+project(amos-rs LANGUAGES C Fortran)
+
+include(FortranCInterface)
+
+FortranCInterface_HEADER(${CMAKE_CURRENT_SOURCE_DIR}/amos-mangle.h
+    MACRO_NAMESPACE "F_"
+    SYMBOL_NAMESPACE "f_"
+)
+
+
 set(SRC
     d1mach.f
     xerror.f
@@ -40,4 +52,8 @@ set(SRC
     zwrsk.f
 )
 
-add_library(amos ${SRC})
+add_library(amos STATIC ${SRC} amos-int.c)
+
+install(TARGETS amos
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/amos
+)
