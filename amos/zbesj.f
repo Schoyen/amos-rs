@@ -147,7 +147,7 @@ C
 C     COMPLEX CI,CSGN,CY,Z,ZN
       DOUBLE PRECISION AA, ALIM, ARG, CII, CSGNI, CSGNR, CYI, CYR, DIG,
      * ELIM, FNU, FNUL, HPI, RL, R1M5, STR, TOL, ZI, ZNI, ZNR, ZR,
-     * D1MACH, BB, FN, AZ, ZABS, ASCLE, RTOL, ATOL, STI
+     * D1MACH, BB, FN, AZ, AZABS, ASCLE, RTOL, ATOL, STI
       INTEGER I, IERR, INU, INUH, IR, K, KODE, K1, K2, N, NL, NZ, I1MACH
       DIMENSION CYR(N), CYI(N)
       DATA HPI /1.57079632679489662D0/
@@ -186,7 +186,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     TEST FOR PROPER RANGE
 C-----------------------------------------------------------------------
-      AZ = ZABS(ZR,ZI)
+      AZ = AZABS(ZR,ZI)
       FN = FNU+DBLE(FLOAT(N-1))
       AA = 0.5D0/TOL
       BB=DBLE(FLOAT(I1MACH(9)))*0.5D0

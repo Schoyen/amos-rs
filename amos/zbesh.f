@@ -152,13 +152,13 @@ C               A PORTABLE PACKAGE FOR BESSEL FUNCTIONS OF A COMPLEX
 C                 ARGUMENT AND NONNEGATIVE ORDER BY D. E. AMOS, TRANS.
 C                 MATH. SOFTWARE, 1986
 C
-C***ROUTINES CALLED  ZACON,ZBKNU,ZBUNK,ZUOIK,ZABS,I1MACH,D1MACH
+C***ROUTINES CALLED  ZACON,ZBKNU,ZBUNK,ZUOIK,AZABS,I1MACH,D1MACH
 C***END PROLOGUE  ZBESH
 C
 C     COMPLEX CY,Z,ZN,ZT,CSGN
       DOUBLE PRECISION AA, ALIM, ALN, ARG, AZ, CYI, CYR, DIG, ELIM,
      * FMM, FN, FNU, FNUL, HPI, RHPI, RL, R1M5, SGN, STR, TOL, UFL, ZI,
-     * ZNI, ZNR, ZR, ZTI, D1MACH, ZABS, BB, ASCLE, RTOL, ATOL, STI,
+     * ZNI, ZNR, ZR, ZTI, D1MACH, AZABS, BB, ASCLE, RTOL, ATOL, STI,
      * CSGNR, CSGNI
       INTEGER I, IERR, INU, INUH, IR, K, KODE, K1, K2, M,
      * MM, MR, N, NN, NUF, NW, NZ, I1MACH
@@ -208,7 +208,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     TEST FOR PROPER RANGE
 C-----------------------------------------------------------------------
-      AZ = ZABS(ZR,ZI)
+      AZ = AZABS(ZR,ZI)
       AA = 0.5D0/TOL
       BB=DBLE(FLOAT(I1MACH(9)))*0.5D0
       AA = DMIN1(AA,BB)

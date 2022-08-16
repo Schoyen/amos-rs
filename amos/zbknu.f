@@ -5,7 +5,7 @@ C***REFER TO  ZBESI,ZBESK,ZAIRY,ZBESH
 C
 C     ZBKNU COMPUTES THE K BESSEL FUNCTION IN THE RIGHT HALF Z PLANE.
 C
-C***ROUTINES CALLED  DGAMLN,I1MACH,D1MACH,ZKSCL,ZSHCH,ZUCHK,ZABS,ZDIV,
+C***ROUTINES CALLED  DGAMLN,I1MACH,D1MACH,ZKSCL,ZSHCH,ZUCHK,AZABS,ZDIV,
 C                    ZEXP,ZLOG,ZMLT,ZSQRT
 C***END PROLOGUE  ZBKNU
 C
@@ -16,7 +16,7 @@ C
      * FI, FK, FKS, FMUI, FMUR, FNU, FPI, FR, G1, G2, HPI, PI, PR, PTI,
      * PTR, P1I, P1R, P2I, P2M, P2R, QI, QR, RAK, RCAZ, RTHPI, RZI,
      * RZR, R1, S, SMUI, SMUR, SPI, STI, STR, S1I, S1R, S2I, S2R, TM,
-     * TOL, TTH, T1, T2, YI, YR, ZI, ZR, DGAMLN, D1MACH, ZABS, ELM,
+     * TOL, TTH, T1, T2, YI, YR, ZI, ZR, DGAMLN, D1MACH, AZABS, ELM,
      * CELMR, ZDR, ZDI, AS, ALAS, HELIM, CYR, CYI
       INTEGER I, IFLAG, INU, K, KFLAG, KK, KMAX, KODE, KODED, N, NZ,
      * IDUM, I1MACH, J, IC, INUB, NW
@@ -38,7 +38,7 @@ C
      3    -2.15241674114950973D-04,    -2.01348547807882387D-05,
      4     1.13302723198169588D-06,     6.11609510448141582D-09/
 C
-      CAZ = ZABS(ZR,ZI)
+      CAZ = AZABS(ZR,ZI)
       CSCLR = 1.0D0/TOL
       CRSCR = TOL
       CSSR(1) = CSCLR
@@ -320,7 +320,7 @@ C-----------------------------------------------------------------------
 C     COMPUTE (P2/CS)=(P2/CABS(CS))*(CONJG(CS)/CABS(CS)) FOR BETTER
 C     SCALING
 C-----------------------------------------------------------------------
-      TM = ZABS(CSR,CSI)
+      TM = AZABS(CSR,CSI)
       PTR = 1.0D0/TM
       S1R = P2R*PTR
       S1I = P2I*PTR
@@ -337,7 +337,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------
 C     COMPUTE P1/P2=(P1/CABS(P2)*CONJG(P2)/CABS(P2) FOR SCALING
 C-----------------------------------------------------------------------
-      TM = ZABS(P2R,P2I)
+      TM = AZABS(P2R,P2I)
       PTR = 1.0D0/TM
       P1R = P1R*PTR
       P1I = P1I*PTR
@@ -472,7 +472,7 @@ C-----------------------------------------------------------------------
         S1I = STI
         CKR = CKR+RZR
         CKI = CKI+RZI
-        AS = ZABS(S2R,S2I)
+        AS = AZABS(S2R,S2I)
         ALAS = DLOG(AS)
         P2R = -ZDR+ALAS
         IF(P2R.LT.(-ELIM)) GO TO 263

@@ -152,7 +152,7 @@ C***END PROLOGUE  ZBESI
 C     COMPLEX CONE,CSGN,CW,CY,CZERO,Z,ZN
       DOUBLE PRECISION AA, ALIM, ARG, CONEI, CONER, CSGNI, CSGNR, CYI,
      * CYR, DIG, ELIM, FNU, FNUL, PI, RL, R1M5, STR, TOL, ZI, ZNI, ZNR,
-     * ZR, D1MACH, AZ, BB, FN, ZABS, ASCLE, RTOL, ATOL, STI
+     * ZR, D1MACH, AZ, BB, FN, AZABS, ASCLE, RTOL, ATOL, STI
       INTEGER I, IERR, INU, K, KODE, K1,K2,N,NZ,NN, I1MACH
       DIMENSION CYR(N), CYI(N)
       DATA PI /3.14159265358979324D0/
@@ -192,7 +192,7 @@ C-----------------------------------------------------------------------
 C-----------------------------------------------------------------------------
 C     TEST FOR PROPER RANGE
 C-----------------------------------------------------------------------
-      AZ = ZABS(ZR,ZI)
+      AZ = AZABS(ZR,ZI)
       FN = FNU+DBLE(FLOAT(N-1))
       AA = 0.5D0/TOL
       BB=DBLE(FLOAT(I1MACH(9)))*0.5D0
