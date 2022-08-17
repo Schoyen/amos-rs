@@ -113,6 +113,9 @@ mod tests {
         let foo = iv(-1.0, num::complex::Complex::new(1.0, 1.0), n);
         assert_eq!(foo.len(), n as usize);
         dbg!(foo);
+        let foo_2 = iv(1.0, num::complex::Complex::new(1.0, 1.0), n);
+        // Should be the same as foo
+        dbg!(foo_2);
     }
 
     #[test]
