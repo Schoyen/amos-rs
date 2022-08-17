@@ -141,3 +141,6 @@ dmypy.json
 
 # Vim swap
 *.swp
+
+# Mac-crap
+.DS_Store
