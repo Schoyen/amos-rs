@@ -23,9 +23,10 @@ out_e = np.zeros_like(out)
 
 
 for i, nu_0 in enumerate(nu_start):
+    zr = (-1) ** (np.random.randint(2)) * np.random.random()
+    zi = (-1) ** (np.random.randint(2)) * np.random.random()
+
     for j in range(n):
-        zr = (-1) ** (np.random.randint(2)) * np.random.random()
-        zi = (-1) ** (np.random.randint(2)) * np.random.random()
         cy = scipy.special.iv((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr + 1j * zi)
         cy_e = scipy.special.ive((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr + 1j * zi)
 
@@ -44,5 +45,5 @@ for i, nu_0 in enumerate(nu_start):
         out_e[i * n + j, 5] = cy_e.imag
 
 
-np.savetxt("zbesi_test.txt", out, delimiter=", ", header="nu, j, zr, zi, cyr, cyi")
-np.savetxt("zbesi_e_test.txt", out_e, delimiter=", ", header="nu, j, zr, zi, cyr, cyi")
+np.savetxt("zbesi_test.txt", out, delimiter=" ", header="nu j zr zi cyr cyi")
+np.savetxt("zbesi_e_test.txt", out_e, delimiter=" ", header="nu j zr zi cyr cyi")
