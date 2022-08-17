@@ -43,6 +43,7 @@ pub fn zbesi(
 
     // Handle ierr and nz
 
+    // See amos/zbesi.f lines 78-90 on how to handle negative orders of nu
     if sign < 0.0 {
         let mut cy_kr = vec![0.0; n as usize];
         let mut cy_ki = vec![0.0; n as usize];
@@ -65,6 +66,7 @@ pub fn zbesi(
 
         // Handle nz and ierr
 
+        // Handle lines 72-78 in zbesi.f
         for i in 0..(n as usize) {
             let arg = std::f64::consts::PI * (nu + (i as f64));
             cyr[i] = cyr[i] + (2.0 / std::f64::consts::PI) * arg.sin() * cy_kr[i];
