@@ -14,6 +14,7 @@ However, as these authors downloaded much of the code from
 there is also a corresponding [BSD-3-Clause
 license](https://github.com/scipy/scipy/blob/27aaa296daf8f5a81beeb6504ae405719abee626/LICENSE.txt).
 Finally, in the [README.md](amos/README.md) and the [dsclmr.f](amos/dsclmr.f)
-there is a statement on the unlimited release of the original AMOS code.
+there is a statement on the unlimited release of the original AMOS code, which
+is derived from SciPy.
 
 The Rust-wrapper code is licensed under [MIT](LICENSE).
