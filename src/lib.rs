@@ -1,5 +1,5 @@
 mod bindings;
-mod zbesi;
+pub mod zbesi;
 
 #[cfg(test)]
 mod tests {
