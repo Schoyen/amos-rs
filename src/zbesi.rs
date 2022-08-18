@@ -1,13 +1,8 @@
 use crate::bindings::{zbesi_, zbesk_};
-use num;
+use num::complex::Complex;
 use std::os::raw::c_int;
 
-pub fn zbesi(
-    nu: f64,
-    z: num::complex::Complex<f64>,
-    kode: i32,
-    n: i32,
-) -> Vec<num::complex::Complex<f64>> {
+pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32, n: i32) -> Vec<Complex<f64>> {
     if kode < 1 || kode > 2 {
         panic!("kode must be 1 (iv) or 2 (ive)");
     }
@@ -43,10 +38,10 @@ pub fn zbesi(
 
     // Handle ierr and nz
 
-    let mut cy: Vec<num::complex::Complex<f64>> = cyr
+    let mut cy: Vec<Complex<f64>> = cyr
         .iter()
         .zip(cyi.iter())
-        .map(|(&re, &im)| num::complex::Complex::new(re, im))
+        .map(|(&re, &im)| Complex::new(re, im))
         .collect();
 
     // See amos/zbesi.f lines 78-90 on how to handle negative orders of nu
@@ -74,10 +69,10 @@ pub fn zbesi(
 
         // Handle nz and ierr
 
-        let cy_k: Vec<num::complex::Complex<f64>> = cy_kr
+        let cy_k: Vec<Complex<f64>> = cy_kr
             .iter()
             .zip(cy_ki.iter())
-            .map(|(&re, &im)| num::complex::Complex::new(re, im))
+            .map(|(&re, &im)| Complex::new(re, im))
             .collect();
 
         // In the case where kode == 2, i.e., we compute the exponentially scaled Bessel functions
@@ -103,7 +98,7 @@ pub fn zbesi(
         //                  = ive(nu, z) + (2 / pi) * sin(pi * nu)
         //                      * exp(-(z.re + abs(z.re)) - 1j * z.im) * kve(nu, z)
 
-        let mut k_scaling = num::complex::Complex::new(1.0, 0.0);
+        let mut k_scaling = Complex::new(1.0, 0.0);
 
         if kode == 2 {
             k_scaling = (-z.re.abs() - z).exp();
@@ -119,13 +114,13 @@ pub fn zbesi(
     cy
 }
 
-pub fn iv(nu: f64, z: num::complex::Complex<f64>, n: i32) -> Vec<num::complex::Complex<f64>> {
+pub fn iv(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
     let kode: i32 = 1;
 
     zbesi(nu, z, kode, n)
 }
 
-pub fn ive(nu: f64, z: num::complex::Complex<f64>, n: i32) -> Vec<num::complex::Complex<f64>> {
+pub fn ive(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
     let kode: i32 = 2;
 
     zbesi(nu, z, kode, n)
@@ -141,7 +136,7 @@ mod tests {
         let kode: i32 = 1;
         let n: i32 = 3;
 
-        let foo = zbesi(0.0, num::complex::Complex::new(1.0, 1.0), kode, n);
+        let foo = zbesi(0.0, Complex::new(1.0, 1.0), kode, n);
         assert_eq!(foo.len(), n as usize);
     }
 
@@ -149,9 +144,9 @@ mod tests {
     fn test_iv_sym() {
         let n: i32 = 2;
 
-        let foo = iv(-1.0, num::complex::Complex::new(1.0, 1.0), n);
+        let foo = iv(-1.0, Complex::new(1.0, 1.0), n);
         assert_eq!(foo.len(), n as usize);
-        let foo_2 = iv(1.0, num::complex::Complex::new(1.0, 1.0), n);
+        let foo_2 = iv(1.0, Complex::new(1.0, 1.0), n);
         for i in 0..(n as usize) {
             assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
             assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
@@ -162,9 +157,9 @@ mod tests {
     fn test_ive_sym() {
         let n: i32 = 3;
 
-        let foo = ive(-1.0, num::complex::Complex::new(1.0, 1.0), n);
+        let foo = ive(-1.0, Complex::new(1.0, 1.0), n);
         assert_eq!(foo.len(), n as usize);
-        let foo_2 = ive(1.0, num::complex::Complex::new(1.0, 1.0), n);
+        let foo_2 = ive(1.0, Complex::new(1.0, 1.0), n);
         for i in 0..(n as usize) {
             assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
             assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
