@@ -146,23 +146,28 @@ mod tests {
     }
 
     #[test]
-    fn test_iv() {
+    fn test_iv_sym() {
         let n: i32 = 2;
 
         let foo = iv(-1.0, num::complex::Complex::new(1.0, 1.0), n);
         assert_eq!(foo.len(), n as usize);
-        dbg!(foo);
         let foo_2 = iv(1.0, num::complex::Complex::new(1.0, 1.0), n);
-        // Should be the same as foo
-        dbg!(foo_2);
+        for i in 0..(n as usize) {
+            assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
+            assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
+        }
     }
 
     #[test]
-    fn test_ive() {
-        let n: i32 = 1;
+    fn test_ive_sym() {
+        let n: i32 = 3;
 
         let foo = ive(-1.0, num::complex::Complex::new(1.0, 1.0), n);
-        dbg!(&foo);
         assert_eq!(foo.len(), n as usize);
+        let foo_2 = ive(1.0, num::complex::Complex::new(1.0, 1.0), n);
+        for i in 0..(n as usize) {
+            assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
+            assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
+        }
     }
 }
