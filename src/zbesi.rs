@@ -43,6 +43,12 @@ pub fn zbesi(
 
     // Handle ierr and nz
 
+    let mut cy: Vec<num::complex::Complex<f64>> = cyr
+        .iter()
+        .zip(cyi.iter())
+        .map(|(&re, &im)| num::complex::Complex::new(re, im))
+        .collect();
+
     // See amos/zbesi.f lines 78-90 on how to handle negative orders of nu
     if sign < 0.0 {
         let mut cy_kr = vec![0.0; n as usize];
@@ -66,18 +72,49 @@ pub fn zbesi(
 
         // Handle nz and ierr
 
+        let mut cy_k: Vec<num::complex::Complex<f64>> = cy_kr
+            .iter()
+            .zip(cy_ki.iter())
+            .map(|(&re, &im)| num::complex::Complex::new(re, im))
+            .collect();
+
+        // In the case where kode == 2, i.e., we compute the exponentially scaled Bessel functions
+        // ive and kve, we need to handle that the scaling is different for iv and kv.
+        // That is,
+        //
+        //      ive(nu, z) = exp(-abs(z.re)) * iv(nu, z)    (see line 19 in zbesi.f),
+        //
+        //  and
+        //
+        //      kve(nu, z) = exp(z) * kv(nu, z)             (see line 21 in zbesk.f).
+        //
+        //  This means that for -nu < 0 with exponentially scaling we get
+        //
+        //      ive(-nu, z) = exp(-abs(z.re)) * iv(-nu, z)
+        //                  = exp(-abs(z.re)) * (
+        //                      iv(nu, z) + (2 / pi) * sin(pi * nu) kv(nu, z)
+        //                  )
+        //                  = ive(nu, z)
+        //                      + (2 / pi) * sin(pi * nu) * exp(-abs(z.re)) * kv(nu, z)
+        //                  = ive(nu, z) + (2 / pi) * sin(pi * nu)
+        //                      * exp(-abs(z.re)) * exp(-z) * exp(z) * kv(nu, z)
+        //                  = ive(nu, z) + (2 / pi) * sin(pi * nu)
+        //                      * exp(-(z.re + abs(z.re)) - 1j * z.im) * kve(nu, z)
+
+        let mut k_scaling = num::complex::Complex::new(1.0, 0.0);
+
+        if kode == 2 {
+            k_scaling = (-z.re.abs() - z).exp();
+        }
+
         // Handle lines 72-78 in zbesi.f
         for i in 0..(n as usize) {
-            let arg = std::f64::consts::PI * (nu + (i as f64));
-            cyr[i] = cyr[i] + (2.0 / std::f64::consts::PI) * arg.sin() * cy_kr[i];
-            cyi[i] = cyi[i] + (2.0 / std::f64::consts::PI) * arg.sin() * cy_ki[i];
+            let sin_nupi = (std::f64::consts::PI * (nu + (i as f64))).sin();
+            cy[i] = cy[i] + (2.0 / std::f64::consts::PI) * sin_nupi * k_scaling * cy_k[i];
         }
     }
 
-    cyr.iter()
-        .zip(cyi.iter())
-        .map(|(&re, &im)| num::complex::Complex::new(re, im))
-        .collect()
+    cy
 }
 
 pub fn iv(nu: f64, z: num::complex::Complex<f64>, n: i32) -> Vec<num::complex::Complex<f64>> {
