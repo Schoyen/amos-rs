@@ -50,7 +50,9 @@ pub fn zbesi(
         .collect();
 
     // See amos/zbesi.f lines 78-90 on how to handle negative orders of nu
-    if sign < 0.0 {
+    // Also, since sin(pi * nu) = 0 when nu is an integer, we test nu.floor() == nu to avoid
+    // computing kv unnecessarily.
+    if sign < 0.0 && nu.floor() != nu {
         let mut cy_kr = vec![0.0; n as usize];
         let mut cy_ki = vec![0.0; n as usize];
         let mut nz: c_int = 0;
