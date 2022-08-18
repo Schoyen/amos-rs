@@ -83,8 +83,6 @@ fn test_ive() {
         let cy = amos_rs::zbesi::ive(nu_0, z, ((j * j.signum()) as i32) + 1);
 
         assert_eq!(cy_t.len(), cy.len());
-        dbg!(&cy_t);
-        dbg!(&cy);
 
         for i in 0..cy_t.len() {
             approx::assert_abs_diff_eq!(cy_t[i].re, cy[i].re, epsilon = 1e-12);
