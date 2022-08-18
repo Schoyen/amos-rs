@@ -1,4 +1,5 @@
 mod bindings;
+pub mod zbesh;
 pub mod zbesi;
 
 #[cfg(test)]
