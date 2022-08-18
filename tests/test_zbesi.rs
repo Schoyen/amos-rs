@@ -16,7 +16,7 @@ fn _get_iv_data(path: &str) -> Vec<Vec<f64>> {
     let mut data = Vec::new();
 
     for s in split {
-        let mut lines = s.split_whitespace();
+        let lines = s.split_whitespace();
         let mut data_line = Vec::new();
 
         for l in lines {

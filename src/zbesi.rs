@@ -74,7 +74,7 @@ pub fn zbesi(
 
         // Handle nz and ierr
 
-        let mut cy_k: Vec<num::complex::Complex<f64>> = cy_kr
+        let cy_k: Vec<num::complex::Complex<f64>> = cy_kr
             .iter()
             .zip(cy_ki.iter())
             .map(|(&re, &im)| num::complex::Complex::new(re, im))
