@@ -14,11 +14,20 @@ The original Fortran 77 code can be found at
 The legacy AMOS code is downloaded from
 [fortran-utils](https://github.com/certik/fortran-utils/tree/70b239f0e474ffd0ea407a9b20f49d93f34e4c27/src/legacy/amos),
 which is [MIT
-licensed](https://github.com/certik/fortran-utils/blob/b43bd24cd421509a5bc6d3b9c3eeae8ce856ed88/LICENSE).
-However, as these authors downloaded much of the code from
-[SciPy](https://github.com/scipy/scipy/tree/7b5ad7a6a921a845bdb170d48c54ab12a45af616/scipy/special/amos)
-there is also a corresponding [BSD-3-Clause
+licensed](https://github.com/certik/fortran-utils/blob/b43bd24cd421509a5bc6d3b9c3eeae8ce856ed88/LICENSE),
+and [SciPy](https://doi.org/10.1145/305658.305711) which is licensed under [BSD-3-Clause
 license](https://github.com/scipy/scipy/blob/27aaa296daf8f5a81beeb6504ae405719abee626/LICENSE.txt).
+In particular routines such as, e.g., `ZABS` in [zabs.f](amos/zabs.f) have been
+renamed to `AZABS` to avoid conflict with built-in functions in modern Fortran.
+These are the main differences in the derived Amos source code and the one
+found at [netlib.org/amos](netlib.org/amos).
+
+The files [d1mach.f90](amos/d1mach.f90), [i1mach.f90](amos/i1mach.f90), and
+[r1mach.f90](amos/r1mach.f90) are found at
+[https://wg25.taa.univie.ac.at/ifip/kyoto/workshop-info/proceedings/einarsson/d1mach.html](https://wg25.taa.univie.ac.at/ifip/kyoto/workshop-info/proceedings/einarsson/d1mach.html).
+They can be downloaded at [r1mach.f90](https://wg25.taa.univie.ac.at/ifip/kyoto/workshop-info/proceedings/einarsson/f90/r1mach.f90), [d1mach.f90](https://wg25.taa.univie.ac.at/ifip/kyoto/workshop-info/proceedings/einarsson/f90/d1mach.f90), and [i1mach.f90](https://wg25.taa.univie.ac.at/ifip/kyoto/workshop-info/proceedings/einarsson/f90/i1mach.f90).
+The paper describing these implementations are found at [https://doi.org/10.1145/305658.305711](https://doi.org/10.1145/305658.305711).
+
 Finally, in the [README.md](amos/README.md) and the [dsclmr.f](amos/dsclmr.f)
 there is a statement on the unlimited release of the original AMOS code.
 The [dsclmr.f](amos/dsclmr.f)-file can be found on Netlib via
