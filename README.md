@@ -1,6 +1,9 @@
-# Amos in Rust
+# Amos wrapper in Rust
 
-This is a rewrite of Amos' [algorithm 644](https://dl.acm.org/doi/10.1145/7921.214331). The original Fortran 77 code can be found at [netlib](https://netlib.org/amos/).
+This is a wrapper for Amos' [algorithm
+644](https://dl.acm.org/doi/10.1145/7921.214331) written in Rust.
+The original Fortran 77 code can be found at
+[netlib](https://netlib.org/amos/).
 
 
 ## License
@@ -14,7 +17,9 @@ However, as these authors downloaded much of the code from
 there is also a corresponding [BSD-3-Clause
 license](https://github.com/scipy/scipy/blob/27aaa296daf8f5a81beeb6504ae405719abee626/LICENSE.txt).
 Finally, in the [README.md](amos/README.md) and the [dsclmr.f](amos/dsclmr.f)
-there is a statement on the unlimited release of the original AMOS code, which
-is derived from SciPy.
+there is a statement on the unlimited release of the original AMOS code.
+The [dsclmr.f](amos/dsclmr.f)-file can be found on Netlib via
+[https://netlib.org/amos/dsclmr.f](https://netlib.org/amos/dsclmr.f) (note that
+clicking this link downloads the file).
 
 The Rust-wrapper code is licensed under [MIT](LICENSE).
