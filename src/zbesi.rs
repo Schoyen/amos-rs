@@ -126,6 +126,24 @@ pub fn ive(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
     zbesi(nu, z, kode, n)
 }
 
+pub fn iv_real(nu: f64, z: f64, n: i32) -> Vec<f64> {
+    let kode: i32 = 1;
+
+    zbesi(nu, Complex::new(z, 0.0), kode, n)
+        .iter()
+        .map(|&cy| cy.re)
+        .collect()
+}
+
+pub fn ive_real(nu: f64, z: f64, n: i32) -> Vec<f64> {
+    let kode: i32 = 2;
+
+    zbesi(nu, Complex::new(z, 0.0), kode, n)
+        .iter()
+        .map(|&cy| cy.re)
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

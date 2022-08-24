@@ -37,6 +37,14 @@ fn get_ive_data() -> Vec<Vec<f64>> {
     _get_iv_data("./tests/dat/zbesi_e_test.txt")
 }
 
+fn get_iv_real_data() -> Vec<Vec<f64>> {
+    _get_iv_data("./tests/dat/zbesi_real_test.txt")
+}
+
+fn get_ive_real_data() -> Vec<Vec<f64>> {
+    _get_iv_data("./tests/dat/zbesi_e_real_test.txt")
+}
+
 #[test]
 fn test_iv() {
     let data = get_iv_data();
@@ -87,6 +95,58 @@ fn test_ive() {
         for i in 0..cy_t.len() {
             approx::assert_abs_diff_eq!(cy_t[i].re, cy[i].re, epsilon = 1e-12);
             approx::assert_abs_diff_eq!(cy_t[i].im, cy[i].im, epsilon = 1e-12);
+        }
+    }
+}
+
+#[test]
+fn test_iv_real() {
+    let data = get_iv_real_data();
+
+    let mut cy_t = Vec::new();
+    for dat in data {
+        let nu_0 = dat[0];
+        let j = dat[1];
+
+        if j.abs() < 1e-12 {
+            cy_t = Vec::new();
+        }
+
+        let z = dat[2];
+        cy_t.push(dat[3]);
+
+        let cy = amos_rs::zbesi::iv_real(nu_0, z, ((j * j.signum()) as i32) + 1);
+
+        assert_eq!(cy_t.len(), cy.len());
+
+        for i in 0..cy_t.len() {
+            approx::assert_abs_diff_eq!(cy_t[i], cy[i], epsilon = 1e-12);
+        }
+    }
+}
+
+#[test]
+fn test_ive_real() {
+    let data = get_ive_real_data();
+
+    let mut cy_t = Vec::new();
+    for dat in data {
+        let nu_0 = dat[0];
+        let j = dat[1];
+
+        if j.abs() < 1e-12 {
+            cy_t = Vec::new();
+        }
+
+        let z = dat[2];
+        cy_t.push(dat[3]);
+
+        let cy = amos_rs::zbesi::ive_real(nu_0, z, ((j * j.signum()) as i32) + 1);
+
+        assert_eq!(cy_t.len(), cy.len());
+
+        for i in 0..cy_t.len() {
+            approx::assert_abs_diff_eq!(cy_t[i], cy[i], epsilon = 1e-12);
         }
     }
 }
