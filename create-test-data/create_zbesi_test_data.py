@@ -17,9 +17,10 @@ nu_start = [
 
 m = len(nu_start) * n
 
-
-out = np.zeros((m, 6))
-out_e = np.zeros_like(out)
+out = []
+out_e = []
+out_real = []
+out_e_real = []
 
 
 for i, nu_0 in enumerate(nu_start):
@@ -29,21 +30,35 @@ for i, nu_0 in enumerate(nu_start):
     for j in range(n):
         cy = scipy.special.iv((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr + 1j * zi)
         cy_e = scipy.special.ive((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr + 1j * zi)
+        cy_real = scipy.special.iv((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr)
+        cy_e_real = scipy.special.ive((nu_0 + j) if nu_0 >= 0 else (nu_0 - j), zr)
 
-        out[i * n + j, 0] = nu_0
-        out[i * n + j, 1] = j if nu_0 >= 0 else -j
-        out[i * n + j, 2] = zr
-        out[i * n + j, 3] = zi
-        out[i * n + j, 4] = cy.real
-        out[i * n + j, 5] = cy.imag
+        assert cy_real.dtype == float
+        assert cy_e_real.dtype == float
 
-        out_e[i * n + j, 0] = nu_0
-        out_e[i * n + j, 1] = j if nu_0 >= 0 else -j
-        out_e[i * n + j, 2] = zr
-        out_e[i * n + j, 3] = zi
-        out_e[i * n + j, 4] = cy_e.real
-        out_e[i * n + j, 5] = cy_e.imag
+        out.append([nu_0, j if nu_0 >= 0 else -j, zr, zi, cy.real, cy.imag])
+        out_e.append([nu_0, j if nu_0 >= 0 else -j, zr, zi, cy_e.real, cy_e.imag])
+
+        if np.floor(nu_0) != nu_0 and zr < 0:
+            assert np.isnan(cy_real)
+            assert np.isnan(cy_e_real)
+
+            continue
+
+        out_real.append([nu_0, j if nu_0 >= 0 else -j, zr, cy_real])
+        out_e_real.append([nu_0, j if nu_0 >= 0 else -j, zr, cy_e_real])
 
 
-np.savetxt("zbesi_test.txt", out, delimiter=" ", header="nu j zr zi cyr cyi")
-np.savetxt("zbesi_e_test.txt", out_e, delimiter=" ", header="nu j zr zi cyr cyi")
+np.savetxt(
+    "zbesi_test.txt", np.asarray(out), delimiter=" ", header="nu j zr zi cyr cyi"
+)
+np.savetxt(
+    "zbesi_e_test.txt", np.asarray(out_e), delimiter=" ", header="nu j zr zi cyr cyi"
+)
+
+np.savetxt(
+    "zbesi_real_test.txt", np.asarray(out_real), delimiter=" ", header="nu j z cy"
+)
+np.savetxt(
+    "zbesi_e_real_test.txt", np.asarray(out_e_real), delimiter=" ", header="nu j z cy"
+)
