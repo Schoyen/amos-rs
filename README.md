@@ -1,9 +1,12 @@
 # Amos wrapper in Rust
 
+![](https://github.com/Schoyen/amos-rs/actions/workflows/rust.yml/badge.svg)
+
 This is a wrapper for Amos' [algorithm
 644](https://dl.acm.org/doi/10.1145/7921.214331) written in Rust.
 The original Fortran 77 code can be found at
 [netlib](https://netlib.org/amos/).
+
 
 
 ## License
