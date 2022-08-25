@@ -1,6 +1,129 @@
 use crate::bindings::{zbesi_, zbesk_};
 use num::complex::Complex;
-use std::os::raw::c_int;
+use std::os::raw::{c_double, c_int};
+
+pub fn zbesi_c(nu: f64, z: Complex<f64>, kode: i32) -> Complex<f64> {
+    if kode < 1 || kode > 2 {
+        panic!("kode must be 1 (iv) or 2 (ive)");
+    }
+
+    let n = 1;
+    let sign = nu.signum();
+    let nu = nu * sign;
+
+    // Sanity check that should be removed
+    assert!(nu >= 0.0);
+
+    let mut cyr = 0.0;
+    let mut cyi = 0.0;
+    let mut nz: c_int = 0;
+    let mut ierr: c_int = 0;
+
+    unsafe {
+        zbesi_(
+            &z.re,
+            &z.im,
+            &nu,
+            &kode as *const c_int,
+            &n as *const c_int,
+            &mut cyr as *mut c_double,
+            &mut cyi as *mut c_double,
+            &mut nz as *mut c_int,
+            &mut ierr as *mut c_int,
+        );
+    }
+
+    // Handle ierr and nz
+
+    let mut cy = Complex::new(cyr, cyi);
+
+    // See amos/zbesi.f lines 78-90 on how to handle negative orders of nu
+    // Also, since sin(pi * nu) = 0 when nu is an integer, we test nu.floor() == nu to avoid
+    // computing kv unnecessarily.
+    if sign < 0.0 && nu.floor() != nu {
+        let mut cy_kr = 0.0;
+        let mut cy_ki = 0.0;
+        let mut nz: c_int = 0;
+        let mut ierr: c_int = 0;
+
+        unsafe {
+            zbesk_(
+                &z.re,
+                &z.im,
+                &nu,
+                &kode as *const c_int,
+                &n as *const c_int,
+                &mut cy_kr as *mut c_double,
+                &mut cy_ki as *mut c_double,
+                &mut nz as *mut c_int,
+                &mut ierr as *mut c_int,
+            );
+        }
+
+        // Handle nz and ierr
+
+        let cy_k = Complex::new(cy_kr, cy_ki);
+
+        // In the case where kode == 2, i.e., we compute the exponentially scaled Bessel functions
+        // ive and kve, we need to handle that the scaling is different for iv and kv.
+        // That is,
+        //
+        //      ive(nu, z) = exp(-abs(z.re)) * iv(nu, z)    (see line 19 in zbesi.f),
+        //
+        //  and
+        //
+        //      kve(nu, z) = exp(z) * kv(nu, z)             (see line 21 in zbesk.f).
+        //
+        //  This means that for -nu < 0 with exponentially scaling we get
+        //
+        //      ive(-nu, z) = exp(-abs(z.re)) * iv(-nu, z)
+        //                  = exp(-abs(z.re)) * (
+        //                      iv(nu, z) + (2 / pi) * sin(pi * nu) kv(nu, z)
+        //                  )
+        //                  = ive(nu, z)
+        //                      + (2 / pi) * sin(pi * nu) * exp(-abs(z.re)) * kv(nu, z)
+        //                  = ive(nu, z) + (2 / pi) * sin(pi * nu)
+        //                      * exp(-abs(z.re)) * exp(-z) * exp(z) * kv(nu, z)
+        //                  = ive(nu, z) + (2 / pi) * sin(pi * nu)
+        //                      * exp(-(z.re + abs(z.re)) - 1j * z.im) * kve(nu, z)
+
+        let mut k_scaling = Complex::new(1.0, 0.0);
+
+        if kode == 2 {
+            k_scaling = (-z.re.abs() - z).exp();
+        }
+
+        // Handle lines 72-78 in zbesi.f
+        let sin_nupi = (std::f64::consts::PI * nu).sin();
+        cy = cy + (2.0 / std::f64::consts::PI) * sin_nupi * k_scaling * cy_k;
+    }
+
+    cy
+}
+
+pub fn iv_c(nu: f64, z: Complex<f64>) -> Complex<f64> {
+    let kode: i32 = 1;
+
+    zbesi_c(nu, z, kode)
+}
+
+pub fn ive_c(nu: f64, z: Complex<f64>) -> Complex<f64> {
+    let kode: i32 = 2;
+
+    zbesi_c(nu, z, kode)
+}
+
+pub fn iv_real_c(nu: f64, z: f64) -> f64 {
+    let kode: i32 = 1;
+
+    zbesi_c(nu, Complex::new(z, 0.0), kode).re
+}
+
+pub fn ive_real_c(nu: f64, z: f64) -> f64 {
+    let kode: i32 = 2;
+
+    zbesi_c(nu, Complex::new(z, 0.0), kode).re
+}
 
 pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32, n: i32) -> Vec<Complex<f64>> {
     if kode < 1 || kode > 2 {
