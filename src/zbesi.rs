@@ -2,7 +2,7 @@ use crate::bindings::{zbesi_, zbesk_};
 use num::complex::Complex;
 use std::os::raw::{c_double, c_int};
 
-pub fn zbesi_c(nu: f64, z: Complex<f64>, kode: i32) -> Complex<f64> {
+pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32) -> Complex<f64> {
     if kode < 1 || kode > 2 {
         panic!("kode must be 1 (iv) or 2 (ive)");
     }
@@ -101,31 +101,31 @@ pub fn zbesi_c(nu: f64, z: Complex<f64>, kode: i32) -> Complex<f64> {
     cy
 }
 
-pub fn iv_c(nu: f64, z: Complex<f64>) -> Complex<f64> {
+pub fn iv(nu: f64, z: Complex<f64>) -> Complex<f64> {
     let kode: i32 = 1;
 
-    zbesi_c(nu, z, kode)
+    zbesi(nu, z, kode)
 }
 
-pub fn ive_c(nu: f64, z: Complex<f64>) -> Complex<f64> {
+pub fn ive(nu: f64, z: Complex<f64>) -> Complex<f64> {
     let kode: i32 = 2;
 
-    zbesi_c(nu, z, kode)
+    zbesi(nu, z, kode)
 }
 
-pub fn iv_real_c(nu: f64, z: f64) -> f64 {
+pub fn iv_real(nu: f64, z: f64) -> f64 {
     let kode: i32 = 1;
 
-    zbesi_c(nu, Complex::new(z, 0.0), kode).re
+    zbesi(nu, Complex::new(z, 0.0), kode).re
 }
 
-pub fn ive_real_c(nu: f64, z: f64) -> f64 {
+pub fn ive_real(nu: f64, z: f64) -> f64 {
     let kode: i32 = 2;
 
-    zbesi_c(nu, Complex::new(z, 0.0), kode).re
+    zbesi(nu, Complex::new(z, 0.0), kode).re
 }
 
-pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32, n: i32) -> Vec<Complex<f64>> {
+pub fn zbesi_vec(nu: f64, z: Complex<f64>, kode: i32, n: i32) -> Vec<Complex<f64>> {
     if kode < 1 || kode > 2 {
         panic!("kode must be 1 (iv) or 2 (ive)");
     }
@@ -237,31 +237,31 @@ pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32, n: i32) -> Vec<Complex<f64>> {
     cy
 }
 
-pub fn iv(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
+pub fn iv_vec(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
     let kode: i32 = 1;
 
-    zbesi(nu, z, kode, n)
+    zbesi_vec(nu, z, kode, n)
 }
 
-pub fn ive(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
+pub fn ive_vec(nu: f64, z: Complex<f64>, n: i32) -> Vec<Complex<f64>> {
     let kode: i32 = 2;
 
-    zbesi(nu, z, kode, n)
+    zbesi_vec(nu, z, kode, n)
 }
 
-pub fn iv_real(nu: f64, z: f64, n: i32) -> Vec<f64> {
+pub fn iv_real_vec(nu: f64, z: f64, n: i32) -> Vec<f64> {
     let kode: i32 = 1;
 
-    zbesi(nu, Complex::new(z, 0.0), kode, n)
+    zbesi_vec(nu, Complex::new(z, 0.0), kode, n)
         .iter()
         .map(|&cy| cy.re)
         .collect()
 }
 
-pub fn ive_real(nu: f64, z: f64, n: i32) -> Vec<f64> {
+pub fn ive_real_vec(nu: f64, z: f64, n: i32) -> Vec<f64> {
     let kode: i32 = 2;
 
-    zbesi(nu, Complex::new(z, 0.0), kode, n)
+    zbesi_vec(nu, Complex::new(z, 0.0), kode, n)
         .iter()
         .map(|&cy| cy.re)
         .collect()
@@ -277,33 +277,50 @@ mod tests {
         let kode: i32 = 1;
         let n: i32 = 3;
 
-        let foo = zbesi(0.0, Complex::new(1.0, 1.0), kode, n);
-        assert_eq!(foo.len(), n as usize);
+        let foo_vec = zbesi_vec(0.0, Complex::new(1.0, 1.0), kode, n);
+        let foo = zbesi(0.0, Complex::new(1.0, 1.0), kode);
+
+        assert_eq!(foo_vec.len(), n as usize);
+        assert_abs_diff_eq!(foo_vec[0].re, foo.re);
+        assert_abs_diff_eq!(foo_vec[0].im, foo.im);
     }
 
     #[test]
     fn test_iv_sym() {
         let n: i32 = 2;
 
-        let foo = iv(-1.0, Complex::new(1.0, 1.0), n);
-        assert_eq!(foo.len(), n as usize);
-        let foo_2 = iv(1.0, Complex::new(1.0, 1.0), n);
+        let foo_vec = iv_vec(-1.0, Complex::new(1.0, 1.0), n);
+        let foo_2_vec = iv_vec(1.0, Complex::new(1.0, 1.0), n);
+
+        assert_eq!(foo_vec.len(), n as usize);
+
         for i in 0..(n as usize) {
-            assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
-            assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
+            assert_abs_diff_eq!(foo_vec[i].re, foo_2_vec[i].re);
+            assert_abs_diff_eq!(foo_vec[i].im, foo_2_vec[i].im);
         }
+
+        let foo = iv(-1.0, Complex::new(1.0, 1.0));
+
+        assert_abs_diff_eq!(foo_vec[0].re, foo.re);
+        assert_abs_diff_eq!(foo_vec[0].im, foo.im);
     }
 
     #[test]
     fn test_ive_sym() {
         let n: i32 = 3;
 
-        let foo = ive(-1.0, Complex::new(1.0, 1.0), n);
-        assert_eq!(foo.len(), n as usize);
-        let foo_2 = ive(1.0, Complex::new(1.0, 1.0), n);
+        let foo_vec = ive_vec(-1.0, Complex::new(1.0, 1.0), n);
+        let foo_2_vec = ive_vec(1.0, Complex::new(1.0, 1.0), n);
+        let foo = ive(-1.0, Complex::new(1.0, 1.0));
+
+        assert_eq!(foo_vec.len(), n as usize);
+
         for i in 0..(n as usize) {
-            assert_abs_diff_eq!(foo[i].re, foo_2[i].re);
-            assert_abs_diff_eq!(foo[i].im, foo_2[i].im);
+            assert_abs_diff_eq!(foo_vec[i].re, foo_2_vec[i].re);
+            assert_abs_diff_eq!(foo_vec[i].im, foo_2_vec[i].im);
         }
+
+        assert_abs_diff_eq!(foo_vec[0].re, foo.re);
+        assert_abs_diff_eq!(foo_vec[0].im, foo.im);
     }
 }
