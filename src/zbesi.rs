@@ -1,6 +1,40 @@
 use crate::bindings::{zbesi_, zbesk_};
 use num::complex::Complex;
+use std::fmt;
 use std::os::raw::{c_double, c_int};
+
+enum ZbesiErrors<T> {
+    // Definitions of the errors are found in amos/zbesi.f lines 42-60
+    Underflow { res: T, nz: i32 }, // NZ > 0
+    InputError,                    // IERR=1
+    Overflow,                      // IERR=2
+    LossOfSignificance(T),         // IERR=3
+    CompleteLossOfSignificance,    // IERR=4
+    TerminationConditionNotMet,    // IERR=5
+}
+
+impl<T> fmt::Display for ZbesiErrors<T> {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            ZbesiErrors::Underflow { res, nz } => {
+                write!(f, "Underflow, number of components set to zero: {}", nz)
+            }
+            ZbesiErrors::InputError => write!(f, "Input error (IERR=1)"),
+            ZbesiErrors::Overflow => write!(f, "Overflow, no computation done (IERR=2)"),
+            ZbesiErrors::LossOfSignificance(res) => write!(
+                f,
+                "|z| or nu large, computation done, but loss of significance (IERR=3)"
+            ),
+            ZbesiErrors::CompleteLossOfSignificance => {
+                write!(f, "|z| or nu too large, no computation done (IERR=4)")
+            }
+            ZbesiErrors::TerminationConditionNotMet => write!(
+                f,
+                "Algorithm termination condition not met, no computation done (IERR=5)"
+            ),
+        }
+    }
+}
 
 pub fn zbesi(nu: f64, z: Complex<f64>, kode: i32) -> Complex<f64> {
     if kode < 1 || kode > 2 {
