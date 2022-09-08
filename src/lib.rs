@@ -1,3 +1,4 @@
+pub mod amos_errors;
 mod bindings;
 pub mod zbesh;
 pub mod zbesi;
