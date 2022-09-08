@@ -7,6 +7,8 @@ This is a wrapper for Amos' [algorithm
 The original Fortran 77 code can be found at
 [netlib](https://netlib.org/amos/).
 
+The wrapper code is made to resemble the [SciPy](https://doi.org/10.1038/s41592-019-0686-2) wrapper for Amos.
+Wrapper functions are therefore named in a similar manner, and testing of the wrapper code is done by comparing with SciPy.
 
 
 ## License
@@ -15,7 +17,7 @@ The legacy AMOS code is downloaded from
 [fortran-utils](https://github.com/certik/fortran-utils/tree/70b239f0e474ffd0ea407a9b20f49d93f34e4c27/src/legacy/amos),
 which is [MIT
 licensed](https://github.com/certik/fortran-utils/blob/b43bd24cd421509a5bc6d3b9c3eeae8ce856ed88/LICENSE),
-and [SciPy](https://doi.org/10.1145/305658.305711) which is licensed under [BSD-3-Clause
+and [SciPy](https://doi.org/10.1038/s41592-019-0686-2) which is licensed under [BSD-3-Clause
 license](https://github.com/scipy/scipy/blob/27aaa296daf8f5a81beeb6504ae405719abee626/LICENSE.txt).
 In particular routines such as, e.g., `ZABS` in [zabs.f](amos/zabs.f) have been
 renamed to `AZABS` to avoid conflict with built-in functions in modern Fortran.
