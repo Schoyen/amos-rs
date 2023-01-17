@@ -1,6 +1,8 @@
 # Amos wrapper in Rust
 
 ![](https://github.com/Schoyen/amos-rs/actions/workflows/rust.yml/badge.svg)
+[![stability-wip](https://img.shields.io/badge/stability-wip-lightgrey.svg)](https://github.com/mkenney/software-guides/blob/master/STABILITY-BADGES.md#work-in-progress)
+
 
 This is a wrapper for Amos' [algorithm
 644](https://dl.acm.org/doi/10.1145/7921.214331) written in Rust.
