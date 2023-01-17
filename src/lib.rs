@@ -40,10 +40,4 @@ mod tests {
         assert_eq!(0, ierr);
         // assert_eq!(1.0, cyr);
     }
-
-    #[test]
-    fn it_works() {
-        let result = 2 + 2;
-        assert_eq!(result, 4);
-    }
 }
